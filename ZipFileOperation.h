@@ -1,11 +1,8 @@
 #import <Foundation/Foundation.h>
 
-@interface ZipFileOperation : NSOperation {
-	id item;
-	id delegate;
-}
+@interface ZipFileOperation : NSOperation 
 
-@property (assign) id item;
-@property (assign) id delegate;
+@property (strong) id item;
+@property (weak) id delegate;
 
 @end

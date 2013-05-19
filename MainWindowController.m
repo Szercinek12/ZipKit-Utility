@@ -54,7 +54,7 @@ const double maxProgress = 100.0;
 + (void) initialize {
 	[NSValueTransformer setValueTransformer:[RemainingTimeTransformer new] forName:@"RemainingTimeTransformer"];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:
-	 [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInteger:ZKLogLevelError] forKey:ZKLogLevelKey]];
+	 @{ZKLogLevelKey: @(ZKLogLevelError)}];
 	[super initialize];
 }
 
@@ -66,13 +66,13 @@ const double maxProgress = 100.0;
 		[panel setAllowsMultipleSelection:YES];
 		[panel setCanChooseFiles:YES];
 		[panel setResolvesAliases:NO];
-		if ([panel runModalForTypes:nil] == NSOKButton) {
-			NSArray *filenames = [panel filenames];
+		if ([panel runModal] == NSOKButton) {
+			NSArray *urls = [panel URLs];
 			@try {				
-				NSString *firstFilename = [filenames objectAtIndex:0];
+				NSString *firstFilename = [urls[0] path];
 				
 				ZipFileOperation *zipFileOperation = [ZipFileOperation new];
-				zipFileOperation.item = ([filenames count] == 1) ? (id)firstFilename : filenames;
+				zipFileOperation.item = ([urls count] == 1) ? (id)firstFilename : urls;
 				zipFileOperation.delegate = self;
 				[self.zipQueue addOperation:zipFileOperation];
 				
@@ -207,7 +207,5 @@ const double maxProgress = 100.0;
 - (BOOL) zkDelegateWantsSizes {
 	return YES;
 }
-
-@synthesize message, action, remainingTime, startTime, progress, sizeWritten, totalSize, totalCount, isIndeterminate, zipQueue;
 
 @end

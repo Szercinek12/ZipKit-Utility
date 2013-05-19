@@ -8,6 +8,4 @@
 	[ZKFileArchive process:self.item usingResourceFork:YES withInvoker:self andDelegate:self.delegate];
 }
 
-@synthesize item, delegate;
-
 @end
